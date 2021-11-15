@@ -1,17 +1,22 @@
 #ifndef AKINATOR_H
 #define AKINATOR_H
 
-struct treeElement {
+struct treeNode {
     char* data;               //< pointer to string with the data
-    struct treeElement* left;  //< pointer to element if answ == YES
-    struct treeElement* right; //< pointer to element if answ == NO
-    int newElement;           //< indicates if element was added in
+    struct treeNode* left;    //< pointer to node if answ == YES
+    struct treeNode* right;   //< pointer to node if answ == NO
+    int newNode;              //< indicates if node was added in
                               //< this session
 };
 
 struct tree {
-    struct treeElement* ptr;  //< pointer to the first element
+    struct treeNode* ptr;     //< pointer to the first node
     char* buffer;             //< pointer to the buffer with database
+};
+
+enum ANSWER {
+	NO  = 0,
+	YES = 0
 };
 
 //---------------------------------------------------
@@ -27,6 +32,17 @@ void treeCtor(struct tree* tree, char* base_file);
 
 //---------------------------------------------------
 //!
+//! Constructor of node in the tree
+//!
+//! @param[out] node - ptr to node
+//! @param[in]  data - feature
+//!
+//--------------------------------------------------
+
+struct treeNode* treeNodeCtor(struct tree* tree, struct treeNode** node, char* data);
+
+//---------------------------------------------------
+//!
 //! Destructor of tree
 //!
 //! @param[out] tree     - pointer to the tree
@@ -37,12 +53,33 @@ void treeDtor(struct tree* tree);
 
 //---------------------------------------------------
 //!
+//! Destructor of node
+//!
+//! @param[out] node - pointer to node
+//!
+//---------------------------------------------------
+
+void treeNodeDtor(struct treeNode* node);
+
+//---------------------------------------------------
+//!
 //! Frees all nodes in the tree
 //!
 //! @param[out] ptr    - pointer to the first element
 //!
 //---------------------------------------------------
 
-void treeClear(struct treeElement* ptr);
+void treeClear(struct treeNode* ptr);
+
+//--------------------------------------------------
+//!
+//! Adds new node to the tree
+//!
+//! @param[out] ptr - ptr to current node
+//! @param[in]  ans - answer that user gave in cur
+//!                   node
+//--------------------------------------------------
+
+void treeAdd(struct tree* tree, struct treeNode* ptr, char* data, char* feature);
 
 #endif // AKINATOR_H
